@@ -21,7 +21,8 @@ class KeyHandler:
         if not self.main_view.ready:
             return
         if key == "RESIZE":
-            self.main_view.drawtool.resize()
+            # await self.main_view.drawtool.resize()
+            # drawtool crashes after resizing to smaller dimension
             return
         if self.main_view.mode == "popupmessage":
             self.main_view.modestack.pop()
@@ -142,9 +143,9 @@ class KeyHandler:
 
             self.main_view.spawn_popup(record_macro, "Record into which register?")
         else:
-            self.main_view.popup_message(f"Macro recorded into {self.macro_recording}")
+            self.main_view.popup_message(f"Macro recorded into {self.main_view.macro_recording}")
             # end macro recording
-            self.main_view.macros[self.macro_recording] = self.macro_sequence
+            self.main_view.macros[self.main_view.macro_recording] = self.main_view.macro_sequence
             self.main_view.macro_recording = None
             self.main_view.macro_sequence = []
     
@@ -169,7 +170,7 @@ class KeyHandler:
     
     @handle("normal", "DOWN")
     async def _handle_key(self, key):
-        self.main_view.message_offset = max(0, self.message_offset - 1)
+        self.main_view.message_offset = max(0, self.main_view.message_offset - 1)
     
     @handle("normal", "E")
     async def _handle_key(self, key):
@@ -228,6 +229,7 @@ class KeyHandler:
     @handle("normal", "r")
     async def _handle_key(self, key):
         if not self.main_view.inputs:
+            self.main_view.command_box = ""
             return
         if self.main_view.command_box:
             try:
