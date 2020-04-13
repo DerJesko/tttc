@@ -113,6 +113,14 @@ class KeyHandler:
     async def _handle_key(self, key):
         await self.main_view.send_message()
 
+    @handle("normal", "ESCAPE")
+    async def _handle_key(self, key):
+        self.main_view.command_box = ""
+    
+    @handle("normal", "BACKSPACE")
+    async def _handle_key(self, key):
+        if len(self.main_view.command_box) > 0:
+            self.main_view.command_box = self.main_view.command_box[:-1]
 
     @handle("normal", "Q")
     async def _handle_key(self, key):
